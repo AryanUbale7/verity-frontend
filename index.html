@@ -155,7 +155,8 @@
             
         </ul>
 
-       <div class="nav-actions">
+      <div class="nav-actions">
+    
     <div id="logged-out-view" style="display: flex; align-items: center; gap: 15px;">
         <a href="login.html" class="btn-login">Login</a>
         <a href="login.html" class="btn-signup">Sign Up</a>
@@ -163,22 +164,20 @@
 
     <div id="logged-in-view" style="display: none; align-items: center; gap: 12px; background: #eff6ff; padding: 6px 16px; border-radius: 50px; border: 1px solid #dbeafe;">
         <img id="nav-user-img" src="" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #2563eb; object-fit: cover;">
-        <span id="nav-user-name" style="font-weight: 700; font-size: 0.85rem; color: #1e293b;"></span>
+        <span id="nav-user-name" style="font-weight: 700; font-size: 0.85rem; color: #1e293b;">User</span>
         <button onclick="logout()" style="background: none; border: none; color: #ef4444; font-size: 10px; font-weight: 800; cursor: pointer; padding-left: 8px; border-left: 1px solid #cbd5e1; margin-left: 5px;">
             LOGOUT
         </button>
     </div>
-    
-    
-            
-             <a href="javascript:void(0)" onclick="checkAccess()" class="btn-white-pulse">
-    Try Verity AI
-    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-    </svg>
-</a>
-        </div>
-    </div>
+
+    <a href="javascript:void(0)" onclick="checkAccess()" class="btn-white-pulse">
+        Try Verity AI
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 16px; height: 16px;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+    </a>
+
+</div>
 </nav>
 <!-- HERO -->
 <section class="hero-section" style="padding: 120px 0 80px; background: radial-gradient(circle at top right, #eff6ff, #ffffff);">
@@ -641,135 +640,8 @@
     <p>&copy; 2026 Verity AI Inc. All rights reserved.</p>
   </div>
 </footer>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Elements pakdo
-        const toggleBtn = document.getElementById('theme-toggle');
-        const htmlElement = document.documentElement;
 
-        // Check karo button mila ya nahi
-        if (!toggleBtn) {
-            console.error("Error: Theme Toggle button nahi mila! ID check karein.");
-            return;
-        }
-
-        // Saved Theme load karo
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        htmlElement.setAttribute('data-theme', savedTheme);
-
-        // Click Event Listener
-        toggleBtn.addEventListener('click', () => {
-            const currentTheme = htmlElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            // Attribute badlo
-            htmlElement.setAttribute('data-theme', newTheme);
-            
-            // Save karo
-            localStorage.setItem('theme', newTheme);
-            
-            console.log("Theme changed to:", newTheme); // Testing ke liye
-        });
-    });
-</script>
-<script>
-        function toggleTheme() {
-            const html = document.documentElement;
-            const current = html.getAttribute('data-theme');
-            html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
-        }
-        window.onload = function() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const name = localStorage.getItem('userName');
-    const img = localStorage.getItem('userImg');
-
-    if (isLoggedIn === 'true') {
-        // Login waale buttons chhupao aur profile dikhao
-        document.getElementById('logged-out-view').style.display = 'none';
-        document.getElementById('logged-in-view').style.display = 'flex';
-        
-        // Name aur Image update karein
-        document.getElementById('nav-user-name').innerText = name;
-        document.getElementById('nav-user-img').src = img;
-    }
-}
-
-// Logout function
-function logout() {
-    localStorage.clear();
-    window.location.reload();
-}
-function checkAccess() {
-    // Check karein ki user login hai ya nahi
-    const userLoggedIn = localStorage.getItem('userName');
-
-    if (userLoggedIn) {
-        // Agar login hai, toh seedha playground par bhej do
-        window.location.href = "try-verity.html";
-    } else {
-        // Agar login nahi hai, toh alert dikhao aur login page par bhej do
-        alert("Please Login or Sign Up first to access Verity AI Playground.");
-        window.location.href = "login.html";
-    }
-}
-    </script>
-  <script>
-    // Ye function page load hote hi check karega
-    function updateNavbar() {
-        const name = localStorage.getItem('userName');
-        const img = localStorage.getItem('userImg');
-
-        const loggedOutView = document.getElementById('logged-out-view');
-        const loggedInView = document.getElementById('logged-in-view');
-
-        // Check karein ki data available hai ya nahi
-        if (name && img) {
-            console.log("User detected:", name);
-            loggedOutView.style.display = 'none'; // Login button chhupao
-            loggedInView.style.display = 'flex'; // Profile aur Logout dikhao
-            
-            // UI mein Data fill karein
-            document.getElementById('nav-user-name').innerText = name.split(' ')[0].toUpperCase();
-            document.getElementById('nav-user-img').src = img;
-        } else {
-            console.log("No user login found.");
-            loggedOutView.style.display = 'flex';
-            loggedInView.style.display = 'none';
-        }
-    }
-
-    // Page load par execute karein
-    window.addEventListener('load', updateNavbar);
-
-    // Logout Function
-    function logout() {
-        if(confirm("Are you sure you want to logout?")) {
-            localStorage.clear(); // Saara data saaf
-            window.location.reload(); // Wapas initial state mein
-        }
-    }
-
-    // Try Now button protection logic
-    function checkAccess() {
-        if (localStorage.getItem('userName')) {
-            window.location.href = "try-verity.html"; //
-        } else {
-            alert("Please login first to access the AI Playground!");
-            window.location.href = "login.html";
-        }
-    }
-</script>
-<script>
-    const menu = document.querySelector('#mobile-menu');
-    const navLinks = document.querySelector('.nav-links');
-
-    menu.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        // Icon ko 'X' banane ka logic (optional)
-        menu.classList.toggle('is-active');
-    });
-</script>
-
+<script src="script.js"></script>
 
 </body>
 

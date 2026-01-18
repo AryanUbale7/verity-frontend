@@ -1,115 +1,162 @@
-async function runEvaluation() {
-  const prompt = document.getElementById("prompt").value;
-  const responseText = document.getElementById("response").value;
-  const resultDiv = document.getElementById("result");
+// =========================================================
+//  VERITY AI - MASTER SCRIPT (CLEAN & CRASH-PROOF)
+// =========================================================
 
-  resultDiv.innerHTML = "⏳ Evaluating...";
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Verity AI Script Loaded..."); 
 
-  try {
-    const response = await fetch("http://127.0.0.1:8000/evaluate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        prompt: prompt,
-        response: responseText
-      })
-    });
+    // 1. Initialize Authentication (Login Check)
+    checkLoginStatus();
 
-    // ✅ data yahin pe define hota hai
-    const data = await response.json();
+    // 2. Initialize Theme (Dark/Light Mode)
+    initializeTheme();
+});
 
-    console.log("Evaluation result:", data);
+// =========================================================
+//  SECTION 1: AUTHENTICATION & NAVBAR LOGIC
+// =========================================================
 
-    // ✅ data ke baad hi use karo
-    resultDiv.innerHTML = `
-      <h3>Result</h3>
-      <p><b>GEN SCORE:</b> ${data.gen_score}</p>
-      <p><b>DECISION:</b> ${data.decision}</p>
-      <p><b>RISK LEVEL:</b> ${data.risk_level}</p>
-      <p><b>ACCURACY:</b> ${data.accuracy}</p>
-      <p><b>EXPLANATION:</b> ${data.short_explanation}</p>
-    `;
+function checkLoginStatus() {
+    // LocalStorage se data uthao
+    const token = localStorage.getItem("authToken");
+    const userName = localStorage.getItem("userName");
+    const userPic = localStorage.getItem("userPic");
 
-    // 🎨 Color coding
-    if (data.decision === "BLOCK") {
-      resultDiv.style.borderLeft = "6px solid red";
-    } else if (data.decision === "REVIEW") {
-      resultDiv.style.borderLeft = "6px solid orange";
-    } else {
-      resultDiv.style.borderLeft = "6px solid green";
+    // HTML Elements dhoondho
+    const loggedOutView = document.getElementById("logged-out-view");
+    const loggedInView = document.getElementById("logged-in-view");
+    const navUserName = document.getElementById("nav-user-name");
+    const navUserImg = document.getElementById("nav-user-img");
+
+    // Safety Check: Agar Navbar elements page par hain tabhi update karo
+    if (loggedInView && loggedOutView) {
+        if (token) {
+            // === USER LOGGED IN ===
+            loggedOutView.style.display = "none";
+            loggedInView.style.display = "flex";
+            
+            // Naam aur Photo set karo
+            if (navUserName && userName) navUserName.textContent = userName;
+            if (navUserImg && userPic) navUserImg.src = userPic;
+        } else {
+            // === USER LOGGED OUT ===
+            loggedOutView.style.display = "flex";
+            loggedInView.style.display = "none";
+        }
     }
-
-  } catch (error) {
-    console.error(error);
-    resultDiv.innerHTML = "❌ Error evaluating response";
-  }
 }
-const toggle = document.getElementById("themeToggle");
-const body = document.body;
 
-toggle.onclick = () => {
-  const theme = body.getAttribute("data-theme");
-  body.setAttribute(
-    "data-theme",
-    theme === "dark" ? "light" : "dark"
-  );
-  toggle.textContent = theme === "dark" ? "🌙" : "☀️";
-};
-// 1. Elements ko pakdo
-const toggleBtn = document.getElementById('theme-toggle');
-const htmlElement = document.documentElement;
+// 🔴 Logout Function
+function logout() {
+    localStorage.clear(); // Sab data clear
+    window.location.href = "index.html"; // Home page par bhejo
+}
 
-// 2. Check karo ki user ne pehle kya save kiya tha
-const savedTheme = localStorage.getItem('theme');
+// 🔒 Access Check (Try Verity Button ke liye)
+function checkAccess() {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+        window.location.href = "try-verity.html";
+    } else {
+        alert("Please login first to access the tool!");
+        window.location.href = "login.html";
+    }
+}
 
-// 3. Agar saved hai toh wo lagao, nahi toh Light mode default
-if (savedTheme) {
+// =========================================================
+//  SECTION 2: THEME TOGGLE (DARK / LIGHT MODE)
+// =========================================================
+
+function initializeTheme() {
+    const toggleBtn = document.getElementById('theme-toggle');
+    const htmlElement = document.documentElement;
+    
+    // 1. Saved theme load karo (Default: Light)
+    const savedTheme = localStorage.getItem('theme') || 'light';
     htmlElement.setAttribute('data-theme', savedTheme);
-} else {
-    htmlElement.setAttribute('data-theme', 'light');
-}
 
-// 4. Button click hone par kya hoga
-toggleBtn.addEventListener('click', () => {
-    // Current theme check karo
-    const currentTheme = htmlElement.getAttribute('data-theme');
-    
-    // Switch karo (Light -> Dark, Dark -> Light)
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    // Naya theme lagao
-    htmlElement.setAttribute('data-theme', newTheme);
-    
-    // Browser ki memory (LocalStorage) mein save karo
-    localStorage.setItem('theme', newTheme);
-});
-window.addEventListener('scroll', function() {
-    const nav = document.querySelector('.premium-nav');
-    if (window.scrollY > 50) {
-        nav.classList.add('scrolled');
-    } else {
-        nav.classList.remove('scrolled');
+    // 2. 🛑 CRASH FIX: Button tabhi setup karo agar wo page par ho
+    if (toggleBtn) {
+        // Button icon update karo
+        toggleBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+        // Click Event Listener
+        toggleBtn.onclick = () => {
+            const current = htmlElement.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            
+            // Apply & Save
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Icon Update
+            toggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        };
     }
-});
-// 1. Page load hote hi check karein ki pehle se koi theme save hai ya nahi
-
-document.documentElement.setAttribute('data-theme', savedTheme);
-
-function toggleTheme() {
-    const html = document.documentElement;
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    // 2. Nayi theme set karein
-    html.setAttribute('data-theme', newTheme);
-    
-    // 3. Local Storage mein save karein taaki dusre pages ko pata chal sake
-    localStorage.setItem('theme', newTheme);
 }
-// Decision Card Animation
-setTimeout(() => {
-    document.querySelector('.decision-loader').style.display = 'none';
-    document.querySelector('.allow-stamp').classList.remove('hidden');
-}, 2000);
+
+// =========================================================
+//  SECTION 3: AI EVALUATION ENGINE (TRY VERITY PAGE ONLY)
+// =========================================================
+
+async function runEvaluation() {
+    // Elements dhoondho
+    const promptInput = document.getElementById("prompt");
+    const responseInput = document.getElementById("response");
+    const resultDiv = document.getElementById("result");
+
+    // 🛑 Safety Check: Agar ye elements nahi hain (Home Page par), toh mat chalo
+    if (!promptInput || !responseInput || !resultDiv) return;
+
+    const prompt = promptInput.value;
+    const responseText = responseInput.value;
+
+    // UI Update: Loading State
+    resultDiv.innerHTML = "⏳ Evaluating... Please wait.";
+    resultDiv.style.borderLeft = "none";
+    resultDiv.style.backgroundColor = "transparent";
+
+    try {
+        // Backend API Call (Render URL)
+        const response = await fetch("https://verity-backend.onrender.com/evaluate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                prompt: prompt,
+                response: responseText
+            })
+        });
+
+        const data = await response.json();
+        console.log("Evaluation result:", data);
+
+        // Result Show Karo
+        resultDiv.innerHTML = `
+            <h3>Analysis Result</h3>
+            <p><b>GEN SCORE:</b> ${data.gen_score}</p>
+            <p><b>DECISION:</b> ${data.decision}</p>
+            <p><b>RISK LEVEL:</b> ${data.risk_level}</p>
+            <p><b>ACCURACY:</b> ${data.accuracy}</p>
+            <hr style="opacity:0.2; margin: 10px 0;">
+            <p class="explanation"><b>EXPLANATION:</b> ${data.short_explanation}</p>
+        `;
+
+        // 🎨 Color Coding (Visual Feedback)
+        if (data.decision === "BLOCK") {
+            resultDiv.style.borderLeft = "6px solid #ef4444"; // Red
+            resultDiv.style.backgroundColor = "rgba(239, 68, 68, 0.1)";
+        } else if (data.decision === "REVIEW") {
+            resultDiv.style.borderLeft = "6px solid #f59e0b"; // Orange
+            resultDiv.style.backgroundColor = "rgba(245, 158, 11, 0.1)";
+        } else {
+            resultDiv.style.borderLeft = "6px solid #10b981"; // Green
+            resultDiv.style.backgroundColor = "rgba(16, 185, 129, 0.1)";
+        }
+
+    } catch (error) {
+        console.error("API Error:", error);
+        resultDiv.innerHTML = "❌ Error connecting to server. Please try again.";
+    }
+}

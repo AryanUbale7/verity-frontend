@@ -120,7 +120,8 @@
             
         </ul>
 
-       <div class="nav-actions">
+      <div class="nav-actions">
+    
     <div id="logged-out-view" style="display: flex; align-items: center; gap: 15px;">
         <a href="login.html" class="btn-login">Login</a>
         <a href="login.html" class="btn-signup">Sign Up</a>
@@ -128,22 +129,19 @@
 
     <div id="logged-in-view" style="display: none; align-items: center; gap: 12px; background: #eff6ff; padding: 6px 16px; border-radius: 50px; border: 1px solid #dbeafe;">
         <img id="nav-user-img" src="" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #2563eb; object-fit: cover;">
-        <span id="nav-user-name" style="font-weight: 700; font-size: 0.85rem; color: #1e293b;"></span>
+        <span id="nav-user-name" style="font-weight: 700; font-size: 0.85rem; color: #1e293b;">User</span>
         <button onclick="logout()" style="background: none; border: none; color: #ef4444; font-size: 10px; font-weight: 800; cursor: pointer; padding-left: 8px; border-left: 1px solid #cbd5e1; margin-left: 5px;">
             LOGOUT
         </button>
     </div>
-    
-    
-            
-             <a href="javascript:void(0)" onclick="checkAccess()" class="btn-white-pulse">
-    Try Verity AI
-    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-    </svg>
-</a>
-        </div>
-    </div>
+
+    <a href="javascript:void(0)" onclick="checkAccess()" class="btn-white-pulse">
+        Try Verity AI
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 16px; height: 16px;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+    </a>
+</div>
 </nav>
    <section class="uc-hero-aurora">
         
@@ -804,68 +802,7 @@ response = verity_ai.<span class="func">audit</span>(
   </div>
 </footer>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const themeBtn = document.getElementById('theme-toggle');
-    const html = document.documentElement;
 
-    // 1. Memory se theme load karein
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    html.setAttribute('data-theme', savedTheme);
-
-    // 2. Button click hone par action
-    if (themeBtn) {
-        themeBtn.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            // Theme switch aur save karein
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            console.log("Theme switched to: " + newTheme);
-        });
-    } else {
-        console.error("Theme button nahi mila! Check karein ki id='theme-toggle' sahi hai.");
-    }
-});
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        const tryNowBtn = document.querySelector('.btn-try-now'); // Check karein aapki class yahi hai
-
-        if (user) {
-            // Agar user login hai toh button ka text badlo ya dashboard link do
-            if(tryNowBtn) {
-                tryNowBtn.href = "try-verity.html";
-                // Optionally: yahan user ka naam bhi dikha sakte hain
-            }
-        } else {
-            // Agar user login nahi hai toh login page par bhejo
-            if(tryNowBtn) {
-                tryNowBtn.href = "login.html";
-            }
-        }
-    });
-    function checkAccess() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-        window.location.href = "try-verity.html";
-    } else {
-        alert("Please login first to access the workspace!");
-        window.location.href = "login.html";
-    }
-}
-</script>
-<script>
-    const menu = document.getElementById('mobile-menu');
-    const navLinks = document.querySelector('.nav-links');
-
-    menu.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        menu.classList.toggle('is-active'); // Menu icon ko animate karne ke liye
-    });
-</script>
+<script src="script.js"></script>
 </body>
 </html>
