@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verity AI - Use Cases</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ================= MASTER PREMIUM CSS ================= */
+        :root {
+            --primary: #2563eb;
+            --bg-color: #ffffff;
+            --text-color: #0f172a;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --border-color: #e2e8f0;
+            --card-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --nav-bg: rgba(0, 0, 0, 0.85);
+            --border-color: #1a1a1a;
+            --card-bg: #0a0a0a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); transition: 0.3s ease; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- Master Navbar Fix --- */
+        .premium-nav {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: var(--nav-bg); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+        }
+        .nav-wrapper { display: flex; align-items: center; justify-content: space-between; }
+        
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--text-color); }
+        .logo span { color: var(--primary); }
+
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 500; opacity: 0.7; transition: 0.3s; }
+        .nav-links a:hover { opacity: 1; color: var(--primary); }
+
+        .nav-actions { display: flex; align-items: center; gap: 16px; }
+        .btn-login { text-decoration: none; color: var(--text-color); font-weight: 600; padding: 10px 18px; }
+        .btn-try { background: var(--primary); color: white; padding: 10px 24px; border-radius: 10px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2); transition: 0.3s; }
+        .btn-try:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); }
+
+        /* --- Hero Section Spacing --- */
+        .hero-section {
+            padding-top: 180px; /* Space from Nav */
+            padding-bottom: 100px;
+            overflow: hidden;
+        }
+        .hero-flex { display: flex; align-items: center; gap: 80px; }
+
+        /* Left side: Avatar */
+        .hero-visual { flex: 1; position: relative; }
+        .avatar-box { position: relative; width: 100%; max-width: 480px; }
+        .lady-img { width: 100%; position: relative; z-index: 5; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1)); }
+        
+        .aura-glow { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 120%; height: 120%; background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+            z-index: 1; 
+        }
+
+        .ai-status {
+            position: absolute; bottom: 10%; right: -20px;
+            background: var(--bg-color); border: 1px solid var(--border-color);
+            padding: 12px 24px; border-radius: 50px; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); z-index: 10;
+        }
+        .dot-pulse { width: 10px; height: 10px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; }
+
+        /* Right side: Text */
+        .hero-text { flex: 1.2; }
+        .hero-text h1 { font-size: 4.8rem; font-weight: 900; line-height: 1.1; letter-spacing: -2px; margin-bottom: 24px; }
+        .gradient-blue { background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .hero-text p { font-size: 1.25rem; color: #64748b; margin-bottom: 40px; max-width: 540px; }
+
+        /* Buttons Fix for Light Mode */
+        .hero-btns { display: flex; gap: 20px; }
+        .btn-primary { background: var(--primary); color: white; padding: 18px 40px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s; }
+        .btn-outline { border: 1.5px solid var(--text-color); color: var(--text-color); padding: 18px 40px; border-radius: 12px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 1024px) {
+            .hero-flex { flex-direction: column; text-align: center; gap: 60px; }
+            .hero-text h1 { font-size: 3.5rem; }
+            .hero-btns { justify-content: center; }
+            .hero-text p { margin-left: auto; margin-right: auto; }
+        }
+    </style>
+</head>
+<body>
+<nav class="premium-nav">
+    <div class="container nav-wrapper">
+        <div class="logo-container">
+    <a href="index.html" style="text-decoration: none; display: inline-block;">
+        <img src="assets/logo.png" alt="Verity AI Logo" style="height: 80px; cursor: pointer;">
+    </a>
+</div>
+
+<div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+        <ul class="nav-links">
+            <li><a href="product.html">Product</a></li>
+            <li><a href="how-it-works.html">How it Works</a></li>
+            <li><a href="use-cases.html">Use Cases</a></li>
+
+            <li><a href="about.html">About</a></li>
+            
+        </ul>
+
+       <div class="nav-actions">
+    <div id="logged-out-view" style="display: flex; align-items: center; gap: 15px;">
+        <a href="login.html" class="btn-login">Login</a>
+        <a href="login.html" class="btn-signup">Sign Up</a>
+    </div>
+
+    <div id="logged-in-view" style="display: none; align-items: center; gap: 12px; background: #eff6ff; padding: 6px 16px; border-radius: 50px; border: 1px solid #dbeafe;">
+        <img id="nav-user-img" src="" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #2563eb; object-fit: cover;">
+        <span id="nav-user-name" style="font-weight: 700; font-size: 0.85rem; color: #1e293b;"></span>
+        <button onclick="logout()" style="background: none; border: none; color: #ef4444; font-size: 10px; font-weight: 800; cursor: pointer; padding-left: 8px; border-left: 1px solid #cbd5e1; margin-left: 5px;">
+            LOGOUT
+        </button>
+    </div>
+    
+    
+            
+             <a href="javascript:void(0)" onclick="checkAccess()" class="btn-white-pulse">
+    Try Verity AI
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+</a>
+        </div>
+    </div>
+</nav>
+   <section class="uc-hero-aurora">
+        
+        <div class="aurora-blob b1"></div>
+        <div class="aurora-blob b2"></div>
+        <div class="aurora-blob b3"></div>
+
+        <div class="container relative-z">
+            
+            <div class="uc-center-content">
+                <div class="glass-pill">
+                    <span class="sparkle">✨</span> Enterprise-Grade Reliability
+                </div>
+                
+                <h1 class="aurora-heading">
+                    AI that plays safe<br>
+                    in <span class="gradient-text-anim">Every Industry.</span>
+                </h1>
+                
+                <p class="aurora-sub">
+                    Deploy AI agents in Finance, Healthcare, and Legal sectors without the fear of hallucinations.
+                </p>
+
+                <div class="uc-actions-center">
+                    <a href="#industries" class="btn-aurora-primary">
+                        See Use Cases
+                    </a>
+                    <a href="#" class="btn-aurora-secondary">
+                        <span class="play-icon">▶</span> Watch Demo
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-glass-visual">
+                <div class="glass-card-3d">
+                    <div class="gc-header">
+                        <div class="gc-dots"><span></span><span></span><span></span></div>
+                        <div class="gc-title">Live Audit Dashboard</div>
+                    </div>
+                    
+                    <div class="gc-body">
+                        <div class="chat-bubble user">
+                            "Summarize this patient's diagnosis."
+                        </div>
+                        <div class="chat-bubble ai">
+                            <div class="ai-text-lines">
+                                <span class="line l1"></span>
+                                <span class="line l2"></span>
+                            </div>
+                            <div class="verified-badge-float">
+                                <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                Verified: Low Risk
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-shine"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <section id="industries" class="uc-section">
+        <div class="container">
+            <div class="uc-split-row">
+                
+                <div class="uc-text">
+                    <div class="persona-badge">
+                        <span class="p-icon">👨‍💻</span> BUILDERS & ENGINEERS
+                    </div>
+                    
+                    <h2>Build safer, more reliable<br> AI products.</h2>
+                    <p class="uc-desc">
+                        Developers use Verity AI to audit AI-generated responses programmatically before showing them to users.
+                    </p>
+
+                    <div class="uc-lists-wrapper">
+                        <div class="uc-list-group">
+                            <h4>How it helps:</h4>
+                            <ul class="check-list-blue">
+                                <li>Detect hallucinations in LLM outputs</li>
+                                <li>Assign reliability scores (Gen Score)</li>
+                                <li>Block or review unsafe responses</li>
+                                <li>Add a trust layer via API</li>
+                            </ul>
+                        </div>
+
+                        <div class="uc-list-group">
+                            <h4>Common Scenarios:</h4>
+                            <div class="scenario-tags">
+                                <span class="tag">Chatbots</span>
+                                <span class="tag">AI Assistants</span>
+                                <span class="tag">Support Bots</span>
+                                <span class="tag">SaaS Features</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <blockquote class="uc-quote">
+                        "Verify AI output before your users see it."
+                    </blockquote>
+                </div>
+
+                <div class="uc-visual">
+                    <div class="code-window">
+                        <div class="window-header">
+                            <div class="dots">
+                                <span class="red"></span><span class="yellow"></span><span class="green"></span>
+                            </div>
+                            <div class="filename">audit_response.py</div>
+                        </div>
+                        
+                        <div class="code-body">
+<pre>
+<span class="kwd">import</span> verity_ai
+
+<span class="cmt"># 1. Capture User Prompt & AI Response</span>
+response = verity_ai.<span class="func">audit</span>(
+    prompt=<span class="str">"How do I reset my router?"</span>,
+    ai_output=<span class="str">"You should throw it..."</span>
+)
+
+<span class="cmt"># 2. Check Safety Score</span>
+<span class="kwd">if</span> response.score < <span class="num">50</span>:
+    <span class="func">flag_for_review</span>(response.id)
+    <span class="kwd">return</span> <span class="str">"I cannot answer that."</span>
+<span class="kwd">else</span>:
+    <span class="kwd">return</span> response.content
+</pre>
+                        </div>
+                        <div class="exec-result">
+                            <span class="status-dot"></span> Status: <strong>BLOCKED (Risk High)</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="code-glow"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="industries"></div>
+<section class="uc-section">
+        <div class="container">
+            <div class="uc-split-row reverse">
+                
+                <div class="uc-visual">
+                    <div class="gov-dashboard-card">
+                        <div class="gov-header">
+                            <div class="gov-title">
+                                <span class="shield-icon">🛡️</span> AI Governance Hub
+                            </div>
+                            <div class="live-indicator">
+                                <span class="blink-dot"></span> Live Monitoring
+                            </div>
+                        </div>
+
+                        <div class="gov-body">
+                            <div class="stats-row">
+                                <div class="stat-box">
+                                    <span class="label">Compliance Score</span>
+                                    <div class="big-num text-green">98.5%</div>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="label">Risks Blocked</span>
+                                    <div class="big-num text-red">142</div>
+                                </div>
+                            </div>
+
+                            <div class="audit-log-list">
+                                <div class="log-entry">
+                                    <div class="log-icon check">✓</div>
+                                    <div class="log-info">
+                                        <strong>Legal_Bot_01</strong>
+                                        <span>Response Approved (Low Risk)</span>
+                                    </div>
+                                    <span class="time">Just now</span>
+                                </div>
+                                <div class="log-entry">
+                                    <div class="log-icon warning">!</div>
+                                    <div class="log-info">
+                                        <strong>Finance_Assistant</strong>
+                                        <span>Flagged: Outdated Data</span>
+                                    </div>
+                                    <span class="time">2m ago</span>
+                                </div>
+                                <div class="log-entry">
+                                    <div class="log-icon check">✓</div>
+                                    <div class="log-info">
+                                        <strong>HR_Policy_Bot</strong>
+                                        <span>Response Approved</span>
+                                    </div>
+                                    <span class="time">5m ago</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="floating-shield">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="gov-glow"></div>
+                </div>
+
+                <div class="uc-text">
+                    <div class="persona-badge purple">
+                        <span class="p-icon">🏢</span> ENTERPRISES & ORGANIZATIONS
+                    </div>
+                    
+                    <h2>Ensure compliance and <br>reduce AI risk.</h2>
+                    <p class="uc-desc">
+                        Large organizations rely on AI, but incorrect outputs can cause serious damage. Verity AI helps enterprises monitor and control AI usage at scale.
+                    </p>
+
+                    <div class="uc-lists-wrapper">
+                        <div class="uc-list-group">
+                            <h4>How it helps:</h4>
+                            <ul class="check-list-purple">
+                                <li>AI governance & compliance tracking</li>
+                                <li>Risk assessment for every response</li>
+                                <li>Internal AI auditing logs</li>
+                                <li>Prevent misinformation at scale</li>
+                            </ul>
+                        </div>
+
+                        <div class="uc-list-group">
+                            <h4>Used by:</h4>
+                            <div class="scenario-tags">
+                                <span class="tag">Legal Teams</span>
+                                <span class="tag">Compliance Depts</span>
+                                <span class="tag">Enterprises</span>
+                                <span class="tag">Internal Tools</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <blockquote class="uc-quote purple-quote">
+                        "Enterprise-grade AI trust & governance."
+                    </blockquote>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="uc-section">
+        <div class="container">
+            <div class="uc-split-row">
+                
+                <div class="uc-text">
+                    <div class="persona-badge teal">
+                        <span class="p-icon">🎓</span> STUDENTS & RESEARCHERS
+                    </div>
+                    
+                    <h2>Verify AI-assisted<br> research and learning.</h2>
+                    <p class="uc-desc">
+                        Students and researchers use AI daily. Verity AI ensures the information is accurate, preventing "AI hallucinations" in your essays and assignments.
+                    </p>
+
+                    <div class="uc-lists-wrapper">
+                        <div class="uc-list-group">
+                            <h4>How it helps:</h4>
+                            <ul class="check-list-teal">
+                                <li>Check factual correctness of AI answers</li>
+                                <li>Identify misleading or incorrect content</li>
+                                <li>Verify citations and references</li>
+                                <li>Improve research quality & integrity</li>
+                            </ul>
+                        </div>
+
+                        <div class="uc-list-group">
+                            <h4>Use Cases:</h4>
+                            <div class="scenario-tags">
+                                <span class="tag">Essays</span>
+                                <span class="tag">Research Summaries</span>
+                                <span class="tag">Thesis Work</span>
+                                <span class="tag">Learning</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <blockquote class="uc-quote teal-quote">
+                        "Learn with confidence, not guesswork."
+                    </blockquote>
+                </div>
+
+                <div class="uc-visual">
+                    <div class="research-paper-card">
+                        <div class="paper-toolbar">
+                            <div class="doc-name">History_Assignment_Final.pdf</div>
+                            <div class="tools">
+                                <span class="tool-btn active">Verity Audit</span>
+                                <span class="tool-btn">Edit</span>
+                            </div>
+                        </div>
+
+                        <div class="paper-body">
+                            <h3>The Industrial Revolution</h3>
+                            <p class="paper-text">
+                                The transition to new manufacturing processes in Great Britain, continental Europe, and the United States...
+                            </p>
+                            
+                            <div class="ai-highlight-box">
+                                <p>
+                                    ...was primarily driven by the invention of the <span class="error-mark">Flux Capacitor in 1750</span> which automated textile production.
+                                </p>
+                                
+                                <div class="audit-popup">
+                                    <div class="popup-header">
+                                        <span class="icon-warning">⚠️</span> <strong>Hallucination Detected</strong>
+                                    </div>
+                                    <p class="popup-msg">"Flux Capacitor" is fictional (Back to the Future). Did you mean <strong>Flying Shuttle</strong>?</p>
+                                </div>
+                            </div>
+
+                            <p class="paper-text">
+                                Steam power became the dominant source of power...
+                            </p>
+                        </div>
+
+                        <div class="grade-badge">
+                            <div class="grade-circle">A+</div>
+                            <span>Fact-Checked</span>
+                        </div>
+                    </div>
+                    
+                    <div class="research-glow"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="uc-section">
+        <div class="container">
+            <div class="uc-split-row reverse">
+                
+                <div class="uc-visual">
+                    <div class="cms-editor-card">
+                        <div class="cms-header">
+                            <div class="cms-title">Verity_CMS v2.0</div>
+                            <div class="cms-actions">
+                                <span class="status-draft">Draft</span>
+                                <button class="btn-publish disabled">Publish</button>
+                            </div>
+                        </div>
+
+                        <div class="cms-body">
+                            <div class="editor-sidebar">
+                                <div class="sidebar-item active">📝 Edit</div>
+                                <div class="sidebar-item">👀 Preview</div>
+                                <div class="sidebar-item">⚙️ Settings</div>
+                            </div>
+                            
+                            <div class="editor-content">
+                                <h1>The Future of Solar Energy</h1>
+                                <p class="content-para">
+                                    Solar panels have increased in efficiency by <span class="verify-highlight">40% over the last decade</span>, making them a viable option for homeowners.
+                                </p>
+                                <p class="content-para">
+                                    However, costs remain high in regions like...
+                                </p>
+
+                                <div class="verity-plugin-panel">
+                                    <div class="vp-header">
+                                        <span class="vp-logo">⚡ Verity Check</span>
+                                    </div>
+                                    <div class="vp-item success">
+                                        <span class="icon">✅</span> Fact Verified (Source: IEA 2024)
+                                    </div>
+                                    <div class="vp-item warning">
+                                        <span class="icon">⚠️</span> Tone Check: Too Passive
+                                    </div>
+                                    <div class="vp-status">
+                                        Status: <strong>Safe to Publish</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="cms-glow"></div>
+                </div>
+
+                <div class="uc-text">
+                    <div class="persona-badge orange">
+                        <span class="p-icon">✍️</span> CONTENT TEAMS & PUBLISHERS
+                    </div>
+                    
+                    <h2>Publish AI-generated<br> content with confidence.</h2>
+                    <p class="uc-desc">
+                        Speed is verified, but reputation is forever. Verity AI acts as your automated editor-in-chief, scanning AI drafts for misleading claims before they go live.
+                    </p>
+
+                    <div class="uc-lists-wrapper">
+                        <div class="uc-list-group">
+                            <h4>How it helps:</h4>
+                            <ul class="check-list-orange">
+                                <li>Detect misleading or hallucinations in articles</li>
+                                <li>Reduce reputational risk & fake news</li>
+                                <li>Ensure editorial accuracy & brand tone</li>
+                                <li>Automated fact-checking at scale</li>
+                            </ul>
+                        </div>
+
+                        <div class="uc-list-group">
+                            <h4>Used by:</h4>
+                            <div class="scenario-tags">
+                                <span class="tag">News Platforms</span>
+                                <span class="tag">Marketing Blogs</span>
+                                <span class="tag">Copywriters</span>
+                                <span class="tag">SEO Teams</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <blockquote class="uc-quote orange-quote">
+                        "Trust AI content before it goes live."
+                    </blockquote>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="uc-section">
+        <div class="container">
+            <div class="uc-split-row">
+                
+                <div class="uc-text">
+                    <div class="persona-badge pink">
+                        <span class="p-icon">🧠</span> EDUCATORS & INSTITUTIONS
+                    </div>
+                    
+                    <h2>Promote responsible AI<br> usage in education.</h2>
+                    <p class="uc-desc">
+                        AI is entering classrooms. Educators use Verity AI to ensure students aren't learning from hallucinations and to guide ethical AI adoption.
+                    </p>
+
+                    <div class="uc-lists-wrapper">
+                        <div class="uc-list-group">
+                            <h4>How it helps:</h4>
+                            <ul class="check-list-pink">
+                                <li>Verify AI-generated lesson plans</li>
+                                <li>Flag hallucinations in student work</li>
+                                <li>Support responsible AI literacy</li>
+                                <li>Reduce misinformation in class</li>
+                            </ul>
+                        </div>
+
+                        <div class="uc-list-group">
+                            <h4>Used by:</h4>
+                            <div class="scenario-tags">
+                                <span class="tag">Universities</span>
+                                <span class="tag">EdTech Platforms</span>
+                                <span class="tag">Teachers</span>
+                                <span class="tag">Libraries</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <blockquote class="uc-quote pink-quote">
+                        "Teach AI the right way."
+                    </blockquote>
+                </div>
+
+                <div class="uc-visual">
+                    <div class="classroom-card">
+                        <div class="tablet-frame">
+                            <div class="tablet-header">
+                                <span>📚 Science_Lesson_Plan_v1</span>
+                                <span class="battery">100%</span>
+                            </div>
+                            <div class="tablet-screen">
+                                <div class="chat-msg ai">
+                                    <p><strong>AI:</strong> Explain Photosynthesis.</p>
+                                    <p>Photosynthesis is when plants use sunlight to turn carbon dioxide into oxygen and sugar...</p>
+                                </div>
+                                
+                                <div class="teacher-grade-box">
+                                    <div class="grade-header">Verity Audit: <strong>98/100</strong></div>
+                                    <div class="grade-check">
+                                        <span class="check-icon">✓</span> Scientific accuracy verified.
+                                    </div>
+                                    <div class="grade-check">
+                                        <span class="check-icon">✓</span> Age-appropriate language.
+                                    </div>
+                                    <button class="btn-approve">Approve for Class</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edu-glow"></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="uc-section">
+        <div class="container">
+            <div class="uc-split-row reverse">
+                
+                <div class="uc-visual">
+                    <div class="safety-dashboard-card">
+                        <div class="dash-header">
+                            <div class="dash-title">Model Reliability Monitor</div>
+                            <div class="dash-tabs">
+                                <span class="active">Live</span>
+                                <span>History</span>
+                            </div>
+                        </div>
+
+                        <div class="graph-area">
+                            <div class="graph-label">Hallucination Rate (Last 30 Days)</div>
+                            <div class="css-graph">
+                                <div class="bar b1"></div>
+                                <div class="bar b2"></div>
+                                <div class="bar b3"></div>
+                                <div class="bar b4"></div>
+                                <div class="bar b5"></div>
+                                <div class="bar b6"></div>
+                                <div class="trend-line"></div>
+                            </div>
+                            <div class="graph-x-axis">
+                                <span>Week 1</span>
+                                <span>Week 2</span>
+                                <span>Week 3</span>
+                                <span>Today</span>
+                            </div>
+                        </div>
+
+                        <div class="alert-ticker">
+                            <span class="alert-icon">📉</span> Risk dropped by <strong>45%</strong> after integration.
+                        </div>
+                    </div>
+                    <div class="safety-glow"></div>
+                </div>
+
+                <div class="uc-text">
+                    <div class="persona-badge slate">
+                        <span class="p-icon">🔐</span> AI SAFETY & TRUST TEAMS
+                    </div>
+                    
+                    <h2>Monitor and improve<br> AI reliability over time.</h2>
+                    <p class="uc-desc">
+                        Safety teams don't just look at one response; they look at trends. Verity AI provides the analytics needed to audit model updates and ensure long-term alignment.
+                    </p>
+
+                    <div class="uc-lists-wrapper">
+                        <div class="uc-list-group">
+                            <h4>How it helps:</h4>
+                            <ul class="check-list-slate">
+                                <li>Track hallucination patterns over time</li>
+                                <li>Audit new model versions (Regression testing)</li>
+                                <li>Improve RLHF (Reinforcement Learning) data</li>
+                                <li>Generate compliance reports</li>
+                            </ul>
+                        </div>
+
+                        <div class="uc-list-group">
+                            <h4>Used by:</h4>
+                            <div class="scenario-tags">
+                                <span class="tag">Model Builders</span>
+                                <span class="tag">Trust & Safety</span>
+                                <span class="tag">QA Engineers</span>
+                                <span class="tag">Policy Teams</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <blockquote class="uc-quote slate-quote">
+                        "Because AI safety matters."
+                    </blockquote>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="uc-final-cta">
+        
+        <div class="cta-orb orb-1"></div>
+        <div class="cta-orb orb-2"></div>
+
+        <div class="container relative-z">
+            <div class="uc-cta-content">
+                <h2 class="cta-title">
+                    Start using <span class="text-gradient">Verity AI</span> today.
+                </h2>
+                <p class="cta-subtitle">
+                    Audit, score, and trust AI responses — before they reach your users.
+                </p>
+                
+                <div class="cta-btn-group">
+                  <a href="javascript:void(0)" onclick="checkAccess()" class="btn-white-pulse">
+    Try Verity AI
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+</a>
+                    
+                </div>
+
+                <div class="cta-micro-text">
+                    <span class="check">✓</span> No credit card required for sandbox.
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+  <div class="footer-container">
+    
+    <div class="footer-col brand-col">
+      <img src="assets/logo.png" alt="Verity AI" class="footer-logo">
+      <p>Building the trust layer for Generative AI. Audit, verify, and deploy with confidence.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Integrations</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">API Documentation</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <div class="social-links">
+        <a href="#" aria-label="Twitter">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+        </a>
+        <a href="#" aria-label="LinkedIn">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a href="#" aria-label="GitHub">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2026 Verity AI Inc. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const themeBtn = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    // 1. Memory se theme load karein
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+
+    // 2. Button click hone par action
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Theme switch aur save karein
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            console.log("Theme switched to: " + newTheme);
+        });
+    } else {
+        console.error("Theme button nahi mila! Check karein ki id='theme-toggle' sahi hai.");
+    }
+});
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const tryNowBtn = document.querySelector('.btn-try-now'); // Check karein aapki class yahi hai
+
+        if (user) {
+            // Agar user login hai toh button ka text badlo ya dashboard link do
+            if(tryNowBtn) {
+                tryNowBtn.href = "try-verity.html";
+                // Optionally: yahan user ka naam bhi dikha sakte hain
+            }
+        } else {
+            // Agar user login nahi hai toh login page par bhejo
+            if(tryNowBtn) {
+                tryNowBtn.href = "login.html";
+            }
+        }
+    });
+    function checkAccess() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        window.location.href = "try-verity.html";
+    } else {
+        alert("Please login first to access the workspace!");
+        window.location.href = "login.html";
+    }
+}
+</script>
+<script>
+    const menu = document.getElementById('mobile-menu');
+    const navLinks = document.querySelector('.nav-links');
+
+    menu.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        menu.classList.toggle('is-active'); // Menu icon ko animate karne ke liye
+    });
+</script>
+</body>
+</html>

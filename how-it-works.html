@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Verity AI Works - The Pipeline</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ================= MASTER PREMIUM CSS ================= */
+        :root {
+            --primary: #2563eb;
+            --bg-color: #ffffff;
+            --text-color: #0f172a;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --border-color: #e2e8f0;
+            --card-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --nav-bg: rgba(0, 0, 0, 0.85);
+            --border-color: #1a1a1a;
+            --card-bg: #0a0a0a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); transition: 0.3s ease; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- Master Navbar Fix --- */
+        .premium-nav {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: var(--nav-bg); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+        }
+        .nav-wrapper { display: flex; align-items: center; justify-content: space-between; }
+        
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--text-color); }
+        .logo span { color: var(--primary); }
+
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 500; opacity: 0.7; transition: 0.3s; }
+        .nav-links a:hover { opacity: 1; color: var(--primary); }
+
+        .nav-actions { display: flex; align-items: center; gap: 16px; }
+        .btn-login { text-decoration: none; color: var(--text-color); font-weight: 600; padding: 10px 18px; }
+        .btn-try { background: var(--primary); color: white; padding: 10px 24px; border-radius: 10px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2); transition: 0.3s; }
+        .btn-try:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); }
+
+        /* --- Hero Section Spacing --- */
+        .hero-section {
+            padding-top: 180px; /* Space from Nav */
+            padding-bottom: 100px;
+            overflow: hidden;
+        }
+        .hero-flex { display: flex; align-items: center; gap: 80px; }
+
+        /* Left side: Avatar */
+        .hero-visual { flex: 1; position: relative; }
+        .avatar-box { position: relative; width: 100%; max-width: 480px; }
+        .lady-img { width: 100%; position: relative; z-index: 5; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1)); }
+        
+        .aura-glow { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 120%; height: 120%; background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+            z-index: 1; 
+        }
+
+        .ai-status {
+            position: absolute; bottom: 10%; right: -20px;
+            background: var(--bg-color); border: 1px solid var(--border-color);
+            padding: 12px 24px; border-radius: 50px; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); z-index: 10;
+        }
+        .dot-pulse { width: 10px; height: 10px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; }
+
+        /* Right side: Text */
+        .hero-text { flex: 1.2; }
+        .hero-text h1 { font-size: 4.8rem; font-weight: 900; line-height: 1.1; letter-spacing: -2px; margin-bottom: 24px; }
+        .gradient-blue { background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .hero-text p { font-size: 1.25rem; color: #64748b; margin-bottom: 40px; max-width: 540px; }
+
+        /* Buttons Fix for Light Mode */
+        .hero-btns { display: flex; gap: 20px; }
+        .btn-primary { background: var(--primary); color: white; padding: 18px 40px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s; }
+        .btn-outline { border: 1.5px solid var(--text-color); color: var(--text-color); padding: 18px 40px; border-radius: 12px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 1024px) {
+            .hero-flex { flex-direction: column; text-align: center; gap: 60px; }
+            .hero-text h1 { font-size: 3.5rem; }
+            .hero-btns { justify-content: center; }
+            .hero-text p { margin-left: auto; margin-right: auto; }
+        }
+    </style>
+    
+</head>
+<body>
+
+ <nav class="premium-nav">
+    <div class="container nav-wrapper">
+        <div class="logo-container">
+    <a href="index.html" style="text-decoration: none; display: inline-block;">
+        <img src="assets/logo.png" alt="Verity AI Logo" style="height: 80px; cursor: pointer;">
+    </a>
+</div>
+
+<div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+        <ul class="nav-links">
+            <li><a href="product.html">Product</a></li>
+            <li><a href="how-it-works.html">How it Works</a></li>
+            <li><a href="use-cases.html">Use Cases</a></li>
+
+            <li><a href="about.html">About</a></li>
+            
+        </ul>
+
+       <div class="nav-actions">
+    <div id="logged-out-view" style="display: flex; align-items: center; gap: 15px;">
+        <a href="login.html" class="btn-login">Login</a>
+        <a href="login.html" class="btn-signup">Sign Up</a>
+    </div>
+
+    <div id="logged-in-view" style="display: none; align-items: center; gap: 12px; background: #eff6ff; padding: 6px 16px; border-radius: 50px; border: 1px solid #dbeafe;">
+        <img id="nav-user-img" src="" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #2563eb; object-fit: cover;">
+        <span id="nav-user-name" style="font-weight: 700; font-size: 0.85rem; color: #1e293b;"></span>
+        <button onclick="logout()" style="background: none; border: none; color: #ef4444; font-size: 10px; font-weight: 800; cursor: pointer; padding-left: 8px; border-left: 1px solid #cbd5e1; margin-left: 5px;">
+            LOGOUT
+        </button>
+    </div>
+    
+    
+            
+             <a href="javascript:void(0)" onclick="checkAccess()" class="btn-white-pulse">
+    Try Verity AI
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+</a>
+        </div>
+    </div>
+</nav>
+    <section class="how-hero">
+        <div class="hero-grid-bg"></div>
+        <div class="hero-glow-center"></div>
+
+        <div class="how-hero-content">
+            <div class="hero-badge-tech">
+                <span class="pulse-dot"></span> REAL-TIME AUDIT ENGINE
+            </div>
+            
+            <h1>How Verity AI Works</h1>
+            
+            <p class="hero-subtext">
+                Verity AI audits AI-generated responses in real time to detect 
+                <strong class="highlight-red">hallucinations</strong>, 
+                <strong class="highlight-red">factual errors</strong>, and 
+                <strong class="highlight-red">risk</strong> — and gives you a clear trust decision.
+            </p>
+
+            <div class="scroll-indicator">
+                <span>Explore the Pipeline</span>
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+            </div>
+        </div>
+    </section>
+
+<section class="breakdown-section">
+    <div class="container">
+        
+        <div class="section-header text-center">
+            <span class="section-tag">DEEP DIVE</span>
+            <h2>Step-by-Step Breakdown</h2>
+        </div>
+
+        <div class="step-row">
+            
+            <div class="step-text">
+                <div class="step-number">STEP 01</div>
+                <h3>Input the AI Response</h3>
+                <p class="step-intro">
+                    It starts with your data. You provide the original user prompt and the raw AI-generated response you want to audit.
+                </p>
+
+                <div class="method-list">
+                    <h4>This can be done via:</h4>
+                    <ul>
+                        <li>
+                            <span class="m-icon">💻</span>
+                            <div><strong>Dashboard:</strong> Simple copy-paste interface.</div>
+                        </li>
+                        <li>
+                            <span class="m-icon">🔌</span>
+                            <div><strong>API Integration:</strong> Real-time automated checks.</div>
+                        </li>
+                        <li>
+                            <span class="m-icon">📂</span>
+                            <div><strong>Batch Upload:</strong> Coming soon for bulk audits.</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pinned-note">
+                    <span class="pin-icon">📌</span>
+                    <p><strong>Crucial Distinction:</strong> Verity AI does <em>NOT</em> generate content. We act as the independent auditor that evaluates it.</p>
+                </div>
+            </div>
+
+            <div class="step-visual">
+                <div class="input-console">
+                    <div class="console-header">
+                        <div class="dots"><span></span><span></span><span></span></div>
+                        <div class="console-title">Input Interface</div>
+                    </div>
+                    
+                    <div class="console-body">
+                        <div class="c-group">
+                            <label>User Prompt:</label>
+                            <div class="c-input">"Explain the health benefits of..."</div>
+                        </div>
+                        <div class="c-group">
+                            <label>AI Response (Raw):</label>
+                            <div class="c-input response-area">
+                                According to recent studies, kale contains...
+                                <span class="cursor">|</span>
+                            </div>
+                        </div>
+                        <button class="c-btn-action">Run Audit</button>
+                    </div>
+                </div>
+                <div class="step-blob"></div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<div class="step-row reverse">
+            
+            <div class="step-visual">
+                <div class="layer-card">
+                    <div class="layer-header">Verity Analysis Engine</div>
+                    
+                    <div class="scan-bar"></div>
+
+                    <div class="layer-stack">
+                        <div class="v-layer l-green">
+                            <span class="icon">✅</span>
+                            <div class="info">
+                                <strong>Factual Accuracy</strong>
+                                <span>Cross-ref verified sources</span>
+                            </div>
+                        </div>
+                        
+                        <div class="v-layer l-red">
+                            <span class="icon">🔍</span>
+                            <div class="info">
+                                <strong>Hallucination Detection</strong>
+                                <span>Scanning for fabrications...</span>
+                            </div>
+                        </div>
+
+                        <div class="v-layer l-yellow">
+                            <span class="icon">⚖️</span>
+                            <div class="info">
+                                <strong>Bias & Risk Check</strong>
+                                <span>Evaluating tone & safety</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layer-status">Processing Layer 2...</div>
+                </div>
+                <div class="step-blob blob-blue"></div>
+            </div>
+
+            <div class="step-text">
+                <div class="step-number">STEP 02</div>
+                <h3>Multi-Layer AI Evaluation</h3>
+                <p class="step-intro">
+                    Once the input is received, Verity AI doesn't just read it; it deconstructs it. Our engine runs parallel checks across multiple dimensions simultaneously.
+                </p>
+
+                <ul class="check-list-styled">
+                    <li>
+                        <span class="chk-icon">🎯</span>
+                        <span><strong>Checks factual accuracy</strong> against real-time data.</span>
+                    </li>
+                    <li>
+                        <span class="chk-icon">👻</span>
+                        <span><strong>Detects hallucination patterns</strong> in logic and citations.</span>
+                    </li>
+                    <li>
+                        <span class="chk-icon">🕸️</span>
+                        <span><strong>Identifies misleading</strong> or outdated claims.</span>
+                    </li>
+                    <li>
+                        <span class="chk-icon">📊</span>
+                        <span><strong>Measures confidence</strong> vs correctness.</span>
+                    </li>
+                </ul>
+
+                <div class="key-point-box">
+                    <span class="kp-label">KEY POINT</span>
+                    <p>This step focuses on <strong>trustworthiness</strong>, not just language quality or grammar.</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="step-row">
+            
+            <div class="step-text">
+                <div class="step-number">STEP 03</div>
+                <h3>Gen Score Calculation</h3>
+                <p class="step-intro">
+                    We distill complex analysis into a single, actionable metric: the <strong>Gen Score (0–100)</strong>. This allows systems to route content programmatically.
+                </p>
+
+                <div class="score-legend">
+                    <div class="legend-item red">
+                        <span class="range">0–30</span>
+                        <div class="desc"><strong>Highly Unreliable:</strong> Block immediately.</div>
+                    </div>
+                    <div class="legend-item yellow">
+                        <span class="range">30–70</span>
+                        <div class="desc"><strong>Needs Review:</strong> Human oversight required.</div>
+                    </div>
+                    <div class="legend-item green">
+                        <span class="range">70–100</span>
+                        <div class="desc"><strong>High Confidence:</strong> Safe to publish.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-visual">
+                <div class="calc-card">
+                    <div class="calc-header">Scoring Logic</div>
+                    
+                    <div class="math-row">
+                        <span class="label">Factual Accuracy</span>
+                        <span class="val">+45 pts</span>
+                    </div>
+                    <div class="math-row">
+                        <span class="label">Logical Coherence</span>
+                        <span class="val">+40 pts</span>
+                    </div>
+                    <div class="math-row penalty">
+                        <span class="label">Risk Penalties</span>
+                        <span class="val">-12 pts</span>
+                    </div>
+
+                    <div class="divider-line"></div>
+
+                    <div class="total-row">
+                        <span class="label">Final Gen Score</span>
+                        <span class="total-score">73</span>
+                    </div>
+                    
+                    <div class="calc-badge">Generated in 120ms</div>
+                </div>
+                <div class="step-blob"></div>
+            </div>
+
+        </div>
+
+        <div class="step-row reverse">
+            
+            <div class="step-visual">
+                <div class="risk-sorter-card">
+                    <div class="sorter-header">Risk Classification Output</div>
+                    
+                    <div class="risk-bins">
+                        <div class="bin low active">
+                            <div class="bin-icon">✅</div>
+                            <div class="bin-label">LOW RISK</div>
+                            <div class="bin-desc">Safe to proceed</div>
+                        </div>
+                        
+                        <div class="bin medium">
+                            <div class="bin-icon">⚠️</div>
+                            <div class="bin-label">MEDIUM</div>
+                            <div class="bin-desc">Needs Review</div>
+                        </div>
+
+                        <div class="bin high">
+                            <div class="bin-icon">🛑</div>
+                            <div class="bin-label">HIGH</div>
+                            <div class="bin-desc">Do Not Trust</div>
+                        </div>
+                    </div>
+
+                    <div class="action-arrow">
+                        <span>Action: <strong>Auto-Approve</strong></span>
+                    </div>
+                </div>
+                <div class="step-blob blob-yellow"></div>
+            </div>
+
+            <div class="step-text">
+                <div class="step-number">STEP 04</div>
+                <h3>Risk Classification</h3>
+                <p class="step-intro">
+                    Beyond the score, we categorize every response into a definitive risk bucket. This enables your application to make instant decisions without ambiguity.
+                </p>
+
+                <ul class="risk-benefits">
+                    <li>
+                        <strong>Low Risk:</strong> Push directly to production or user.
+                    </li>
+                    <li>
+                        <strong>Medium Risk:</strong> Flag for "Human-in-the-Loop" review workflow.
+                    </li>
+                    <li>
+                        <strong>High Risk:</strong> Automatically reject or regenerate the response.
+                    </li>
+                </ul>
+
+                <div class="instant-box">
+                    <p>⚡ This classification happens instantly via API.</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="step-row">
+            
+            <div class="step-text">
+                <div class="step-number">STEP 05</div>
+                <h3>Clear Decision Output</h3>
+                <p class="step-intro">
+                    The final output isn't just data; it's a directive. Verity AI issues a definitive trust signal so your downstream systems know exactly how to handle the content.
+                </p>
+
+                <ul class="decision-list-large">
+                    <li class="d-option allow">
+                        <div class="icon-box">✅</div>
+                        <div class="text">
+                            <strong>ALLOW</strong>
+                            <span>Safe to proceed immediately.</span>
+                        </div>
+                    </li>
+                    <li class="d-option review">
+                        <div class="icon-box">⚠️</div>
+                        <div class="text">
+                            <strong>REVIEW</strong>
+                            <span>Flagged for human oversight.</span>
+                        </div>
+                    </li>
+                    <li class="d-option block">
+                        <div class="icon-box">🛑</div>
+                        <div class="text">
+                            <strong>BLOCK</strong>
+                            <span>High risk. Do not publish.</span>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="no-guess-box">
+                    <span class="ng-icon">🎯</span> <strong>No guessing. No ambiguity.</strong>
+                </div>
+            </div>
+
+            <div class="step-visual">
+                <div class="decision-gate-card">
+                    <div class="gate-header">Final System Verdict</div>
+                    
+                    <div class="gate-status">
+                        <div class="status-ring">
+                            <svg class="checkmark-svg" viewBox="0 0 52 52">
+                                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                            </svg>
+                        </div>
+                        <div class="status-label">ALLOW</div>
+                    </div>
+
+                    <div class="json-snippet">
+                        <div class="code-line"><span class="key">"decision":</span> <span class="val-green">"ALLOW"</span>,</div>
+                        <div class="code-line"><span class="key">"action":</span> <span class="val-str">"publish_immediately"</span></div>
+                    </div>
+
+                </div>
+                <div class="step-blob blob-green"></div>
+            </div>
+
+        </div>
+
+        <section class="explain-section">
+    <div class="container">
+        <div class="explain-row">
+            
+            <div class="explain-visual">
+                <div class="inspector-card">
+                    <div class="doc-view">
+                        <div class="doc-line">The company reported a <span class="highlight error" data-tooltip="Factual Error">200% growth</span> in Q3.</div>
+                        <div class="doc-line">CEO <span class="highlight warning" data-tooltip="Hallucination">John Doe</span> announced the merger on Friday.</div>
+                        <div class="doc-line">Market stability remains high...</div>
+                    </div>
+
+                    <div class="analysis-panel">
+                        <div class="panel-header">
+                            <span class="p-icon">🧐</span> EXPLANATION LOG
+                        </div>
+                        
+                        <div class="log-item error">
+                            <div class="log-title">❌ Factual Error</div>
+                            <div class="log-desc">Verified data shows 15% growth, not 200%.</div>
+                        </div>
+
+                        <div class="log-item warning">
+                            <div class="log-title">⚠️ Hallucination</div>
+                            <div class="log-desc">Entity "John Doe" is not the CEO. Current CEO is "Jane Smith".</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-blob blob-purple"></div>
+            </div>
+
+            <div class="explain-text">
+                <div class="section-tag-purple">BIG DIFFERENTIATOR</div>
+                <h2>Every Score Comes With an Explanation</h2>
+                <p class="step-intro">
+                    Scores are useless if you don't know <em>why</em>. Verity AI breaks open the black box, giving you granular details for every flag.
+                </p>
+
+                <ul class="explain-benefits">
+                    <li>
+                        <span class="eb-icon">🔍</span>
+                        <div>
+                            <strong>Root Cause Analysis</strong>
+                            <p>See exactly which sentence triggered the risk.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="eb-icon">🛠️</span>
+                        <div>
+                            <strong>Actionable Fixes</strong>
+                            <p>Know which part of the prompt or RAG context to fix.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="eb-icon">🤝</span>
+                        <div>
+                            <strong>Builds Trust</strong>
+                            <p>Gives auditors and enterprise teams the "Why" behind the "No".</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="cta-horizon">
+    <div class="horizon-glow"></div>
+    <div class="floating-particles"></div>
+
+    <div class="cta-container">
+        
+        <h2 class="cta-heading">
+            Audit AI Responses with<br>
+            <span class="gold-text">Absolute Confidence.</span>
+        </h2>
+
+        <p class="cta-sub">
+            Stop guessing. Start verifying. Deploy your AI agents with the safety layer used by top engineering teams.
+        </p>
+
+        <div class="cta-actions">
+            <a href="javascript:void(0)" onclick="checkAccess()" class="btn-white-pulse">
+    Try Verity AI
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+</a>
+            <a href="#" class="btn-glass-outline">
+                View Sample Audit
+            </a>
+        </div>
+
+    </div>
+</section>
+   <!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-container">
+    
+    <div class="footer-col brand-col">
+      <img src="assets/logo.png" alt="Verity AI" class="footer-logo">
+      <p>Building the trust layer for Generative AI. Audit, verify, and deploy with confidence.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Integrations</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">API Documentation</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <div class="social-links">
+        <a href="#" aria-label="Twitter">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+        </a>
+        <a href="#" aria-label="LinkedIn">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a href="#" aria-label="GitHub">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2026 Verity AI Inc. All rights reserved.</p>
+  </div>
+</footer>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const themeBtn = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    // 1. Memory se theme load karein
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+
+    // 2. Button click hone par action
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Theme switch aur save karein
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            console.log("Theme switched to: " + newTheme);
+        });
+    } else {
+        console.error("Theme button nahi mila! Check karein ki id='theme-toggle' sahi hai.");
+    }
+});
+function checkAccess() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        window.location.href = "try-verity.html";
+    } else {
+        alert("Please login first to access the workspace!");
+        window.location.href = "login.html";
+    }
+}
+</script>
+<script>
+    const menu = document.getElementById('mobile-menu');
+    const navLinks = document.querySelector('.nav-links');
+
+    menu.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        menu.classList.toggle('is-active'); // Menu icon ko animate karne ke liye
+    });
+</script>
+</body>
+</html>

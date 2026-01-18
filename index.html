@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verity AI – Trust Every AI Response</title>
+  <link rel="stylesheet" href="style.css"/>
+<meta name="description" content="Verity AI - Professional AI Auditing and Credibility Scoring tool.">
+<meta name="keywords" content="AI Audit, Verity AI, Hallucination Detection, AI Security">
+  <style>
+        /* ================= MASTER PREMIUM CSS ================= */
+        :root {
+            --primary: #2563eb;
+            --bg-color: #ffffff;
+            --text-color: #0f172a;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --border-color: #e2e8f0;
+            --card-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --nav-bg: rgba(0, 0, 0, 0.85);
+            --border-color: #1a1a1a;
+            --card-bg: #0a0a0a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); transition: 0.3s ease; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- Master Navbar Fix --- */
+        .premium-nav {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: var(--nav-bg); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+        }
+        .nav-wrapper { display: flex; align-items: center; justify-content: space-between; }
+        
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--text-color); }
+        .logo span { color: var(--primary); }
+
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 500; opacity: 0.7; transition: 0.3s; }
+        .nav-links a:hover { opacity: 1; color: var(--primary); }
+
+        .nav-actions { display: flex; align-items: center; gap: 16px; }
+        .btn-login { text-decoration: none; color: var(--text-color); font-weight: 600; padding: 10px 18px; }
+        .btn-try { background: var(--primary); color: white; padding: 10px 24px; border-radius: 10px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2); transition: 0.3s; }
+        .btn-try:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); }
+
+        /* --- Hero Section Spacing --- */
+        .hero-section {
+            padding-top: 180px; /* Space from Nav */
+            padding-bottom: 100px;
+            overflow: hidden;
+        }
+        .hero-flex { display: flex; align-items: center; gap: 80px; }
+
+        /* Left side: Avatar */
+        .hero-visual { flex: 1; position: relative; }
+        .avatar-box { position: relative; width: 100%; max-width: 480px; }
+        .lady-img { width: 100%; position: relative; z-index: 5; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1)); }
+        
+        .aura-glow { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 120%; height: 120%; background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+            z-index: 1; 
+        }
+
+        .ai-status {
+            position: absolute; bottom: 10%; right: -20px;
+            background: var(--bg-color); border: 1px solid var(--border-color);
+            padding: 12px 24px; border-radius: 50px; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); z-index: 10;
+        }
+        .dot-pulse { width: 10px; height: 10px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; }
+
+        /* Right side: Text */
+        .hero-text { flex: 1.2; }
+        .hero-text h1 { font-size: 4.8rem; font-weight: 900; line-height: 1.1; letter-spacing: -2px; margin-bottom: 24px; }
+        .gradient-blue { background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .hero-text p { font-size: 1.25rem; color: #64748b; margin-bottom: 40px; max-width: 540px; }
+
+        /* Buttons Fix for Light Mode */
+        .hero-btns { display: flex; gap: 20px; }
+        .btn-primary { background: var(--primary); color: white; padding: 18px 40px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s; }
+        .btn-outline { border: 1.5px solid var(--text-color); color: var(--text-color); padding: 18px 40px; border-radius: 12px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+        
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 1024px) {
+            .hero-flex { flex-direction: column; text-align: center; gap: 60px; }
+            .hero-text h1 { font-size: 3.5rem; }
+            .hero-btns { justify-content: center; }
+            .hero-text p { margin-left: auto; margin-right: auto; }
+        }
+    </style>
+    <style>
+    /* Logos ki styling aur hover effect */
+    .logo-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 100px; /* Logos ke beech ka gap badhaya */
+        padding: 20px 0;
+    }
+
+    .partner-logo {
+        height: 45px; /* Size bada kiya */
+        width: auto;
+        filter: grayscale(100%); /* Shuruat mein black & white */
+        opacity: 0.5;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth transition */
+        cursor: pointer;
+    }
+
+    /* Hover karne par color aur scale change hoga */
+    .partner-logo:hover {
+        filter: grayscale(0%); /* Color wapas aa jayega */
+        opacity: 1;
+        transform: scale(1.15) translateY(-5px); /* Thoda bada aur upar uchega */
+    }
+
+    @media (max-width: 768px) {
+        .logo-bar { gap: 40px; flex-wrap: wrap; }
+        .partner-logo { height: 30px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="premium-nav">
+    <div class="container nav-wrapper">
+        <div class="logo-container">
+    <a href="index.html" style="text-decoration: none; display: inline-block;">
+        <img src="assets/logo.png" alt="Verity AI Logo" style="height: 80px; cursor: pointer;">
+    </a>
+</div>
+
+<div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+        <ul class="nav-links">
+            <li><a href="product.html">Product</a></li>
+            <li><a href="how-it-works.html">How it Works</a></li>
+            <li><a href="use-cases.html">Use Cases</a></li>
+
+            <li><a href="about.html">About</a></li>
+            
+        </ul>
+
+       <div class="nav-actions">
+    <div id="logged-out-view" style="display: flex; align-items: center; gap: 15px;">
+        <a href="login.html" class="btn-login">Login</a>
+        <a href="login.html" class="btn-signup">Sign Up</a>
+    </div>
+
+    <div id="logged-in-view" style="display: none; align-items: center; gap: 12px; background: #eff6ff; padding: 6px 16px; border-radius: 50px; border: 1px solid #dbeafe;">
+        <img id="nav-user-img" src="" style="width: 30px; height: 30px; border-radius: 50%; border: 2px solid #2563eb; object-fit: cover;">
+        <span id="nav-user-name" style="font-weight: 700; font-size: 0.85rem; color: #1e293b;"></span>
+        <button onclick="logout()" style="background: none; border: none; color: #ef4444; font-size: 10px; font-weight: 800; cursor: pointer; padding-left: 8px; border-left: 1px solid #cbd5e1; margin-left: 5px;">
+            LOGOUT
+        </button>
+    </div>
+    
+    
+            
+             <a href="javascript:void(0)" onclick="checkAccess()" class="btn-white-pulse">
+    Try Verity AI
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+</a>
+        </div>
+    </div>
+</nav>
+<!-- HERO -->
+<section class="hero-section" style="padding: 120px 0 80px; background: radial-gradient(circle at top right, #eff6ff, #ffffff);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 40px; padding: 0 24px;">
+        
+        <div style="flex: 1.2;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: #dbeafe; color: #1e40af; padding: 6px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 700; margin-bottom: 24px;">
+                <span style="display: block; width: 8px; height: 8px; background: #2563eb; border-radius: 50%; animation: pulse 2s infinite;"></span>
+                TRUSTED BY 50+ INNOVATIVE TEAMS
+            </div>
+            
+            <h1 style="font-size: 4.5rem; line-height: 1.1; font-weight: 900; color: #0f172a; margin-bottom: 24px; letter-spacing: -2px;">
+                Trust Every <br><span style="background: linear-gradient(90deg, #2563eb, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI Response.</span>
+            </h1>
+            
+            <p style="font-size: 1.25rem; line-height: 1.6; color: #475569; margin-bottom: 40px; max-width: 540px;">
+                Verity AI audits AI-generated answers for accuracy and risk — before you trust or deploy them. Build the trust layer for your enterprise.
+            </p>
+
+            <div style="display: flex; gap: 16px; align-items: center;">
+                <a href="javascript:void(0)" onclick="checkAccess()" class="btn-glow-primary" style="background: #2563eb; color: white; padding: 18px 36px; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.2);">
+                    Try Verity AI for Free
+                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                </a>
+                
+                <a href="#how-it-works" style="color: #475569; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 18px 24px;">
+                    How it works
+                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14.75 9l-2.75 3 2.75 3m-3.75-3h7.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <div style="flex: 1; position: relative;">
+            <div style="position: relative; z-index: 2; border-radius: 30px; overflow: hidden; box-shadow: 0 50px 100px -20px rgba(0,0,0,0.15);">
+                <img src="assets/image-removebg-preview.png" alt="Verity AI Dashboard" style="width: 100%; display: block;">
+            </div>
+            <div style="position: absolute; top: -20%; right: -10%; width: 120%; height: 120%; background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%); z-index: 1;"></div>
+        </div>
+    </div>
+</section>
+<div style="padding: 80px 0; background: #ffffff;">
+    <p style="text-align: center; color: #94a3b8; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 50px;">
+        POWERING TRUSTED AI AT
+    </p>
+    
+    <div class="logo-bar">
+        <img src="assets/google.png" alt="Google" class="partner-logo">
+        <img src="assets/meta.png" alt="Meta" class="partner-logo">
+        <img src="assets/openai.png" alt="OpenAI" class="partner-logo">
+        <img src="assets/nvidia.png" alt="NVIDIA" class="partner-logo">
+    </div>
+</div>
+<!-- WHAT WE DO -->
+<section class="process-section">
+    <div class="container">
+        <h2 class="section-title">What <span class="text-blue">Verity AI</span> Does</h2>
+        
+        <div class="process-flow">
+            <div class="process-card">
+                <div class="process-icon-box blue-glow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <h3>Audit Engine</h3>
+                <p>Scans LLM responses for factual consistency, hallucinations, and potential security risks.</p>
+                <div class="step-badge">Phase 01</div>
+            </div>
+
+            <div class="flow-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </div>
+
+            <div class="process-card">
+                <div class="process-icon-box purple-glow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+                </div>
+                <h3>Reliability Scoring</h3>
+                <p>Generates a real-time confidence score based on accuracy and model robustness.</p>
+                <div class="step-badge">Phase 02</div>
+            </div>
+
+            <div class="flow-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </div>
+
+            <div class="process-card">
+                <div class="process-icon-box green-glow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3>Decision Core</h3>
+                <p>Automatically allows safe content, blocks risks, or flags for human oversight.</p>
+                <div class="step-badge">Phase 03</div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="hiw-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="badge-pill">PROCESS</span>
+                <h2>How It Works</h2>
+                <p class="sub-text">From raw prompt to verified response in milliseconds.</p>
+            </div>
+
+            <div class="diagram-container">
+                
+                <div class="diagram-card input-stage">
+                    <h4 class="stage-title">User Prompt & AI Response</h4>
+                    <div class="stage-body">
+                        <div class="mock-msg user-msg">
+                            <div class="msg-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </div>
+                            <div class="msg-content">
+                                <span class="label">User Prompt</span>
+                                <div class="skeleton-lines">
+                                    <span class="line w-80"></span>
+                                    <span class="line w-60"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mock-msg ai-msg">
+                            <div class="msg-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                            </div>
+                            <div class="msg-content">
+                                <span class="label">AI Response</span>
+                                <div class="skeleton-lines">
+                                    <span class="line w-90"></span>
+                                    <span class="line w-70"></span>
+                                    <span class="line w-40"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-arrow">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+
+                <div class="diagram-card engine-stage">
+                    <h4 class="stage-title">Verity AI Audit Engine</h4>
+                    <div class="engine-visual">
+                        <div class="check-item top-left">
+                            <span class="c-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
+                            Accuracy
+                        </div>
+                        <div class="check-item top-right">
+                            <span class="c-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></span>
+                            Hallucination
+                        </div>
+                        
+                        <div class="central-shield">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <span class="shield-text">AI</span>
+                            <div class="shield-pulse"></div>
+                        </div>
+
+                        <div class="check-item bottom-center">
+                            <span class="c-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
+                            Risk Eval
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-arrow">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+
+                <div class="diagram-card output-stage">
+                    <h4 class="stage-title">Verified Output</h4>
+                    <div class="scorecard-body">
+                        
+                        <div class="score-row">
+                            <span class="s-label">Gen Score</span>
+                            <div class="s-value">92 <span class="s-small">/ 100</span></div>
+                            <div class="progress-bar"><div class="fill" style="width: 92%;"></div></div>
+                        </div>
+
+                        <div class="risk-row">
+                            <span class="s-label">Risk Level</span>
+                            <div class="badge-low">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                LOW
+                            </div>
+                        </div>
+
+                        <div class="decision-box">
+                            <span class="d-label">DECISION</span>
+                            <div class="stamp-allow">
+                                ALLOW
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                        </div>
+                        
+                        <div class="verified-footer">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                            Verified by AI Guardrails
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+<!-- USE CASES -->
+<section class="why-choose-section">
+    <div class="container">
+        <h2 class="section-title">Why Choose <span class="text-blue">Verity AI?</span></h2>
+        
+        <div class="choose-grid">
+            <div class="choose-card">
+                <div class="card-icon blue-bg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </div>
+                <h3>Developers</h3>
+                <p>Integrate AI trust and hallucination detection directly into your applications and APIs.</p>
+            </div>
+
+            <div class="choose-card">
+                <div class="card-icon blue-bg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <h3>Enterprises</h3>
+                <p>Ensure compliance, reduce AI risk, and securely adopt AI across teams.</p>
+            </div>
+
+            <div class="choose-card">
+                <div class="card-icon blue-bg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                </div>
+                <h3>Students</h3>
+                <p>Verify AI-generated research papers, essays, and academic work with confidence.</p>
+            </div>
+
+            <div class="choose-card">
+                <div class="card-icon blue-bg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </div>
+                <h3>Content Teams</h3>
+                <p>Maintain editorial integrity by auditing AI-assisted content for factual accuracy.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="comparison-section">
+  <h2>The Verity Difference</h2>
+  <div class="comparison-wrapper">
+    
+    <div class="compare-card before-card">
+      <h3>Before Verity AI</h3>
+      <ul class="compare-list">
+        <li>
+          <span class="icon cross">✕</span>
+          <div class="text">
+            <strong>Wrong answers</strong>
+            <p>Unchecked hallucinations & errors</p>
+          </div>
+        </li>
+        <li>
+          <span class="icon cross">✕</span>
+          <div class="text">
+            <strong>No risk visibility</strong>
+            <p>Flying blind with AI outputs</p>
+          </div>
+        </li>
+        <li>
+          <span class="icon cross">✕</span>
+          <div class="text">
+            <strong>Blind trust</strong>
+            <p>Deploying without verification</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="vs-badge">VS</div>
+
+    <div class="compare-card after-card">
+      <div class="best-choice-tag">Best Choice</div>
+      <h3>After Verity AI</h3>
+      <ul class="compare-list">
+        <li>
+          <span class="icon check">✓</span>
+          <div class="text">
+            <strong>Verified answers</strong>
+            <p>Fact-checked & accurate outputs</p>
+          </div>
+        </li>
+        <li>
+          <span class="icon check">✓</span>
+          <div class="text">
+            <strong>Risk score</strong>
+            <p>Clear 0-100 reliability rating</p>
+          </div>
+        </li>
+        <li>
+          <span class="icon check">✓</span>
+          <div class="text">
+            <strong>Explainable decisions</strong>
+            <p>Know exactly why to trust it</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+<section class="compatibility-section">
+    <div class="container">
+        <div class="comp-header">
+            <p class="sub-text">INTEGRATIONS</p>
+            <h2>Seamlessly Compatible with <span class="text-blue">Leading Models</span></h2>
+        </div>
+        
+        <div class="model-grid">
+            <div class="model-item">
+                <span class="model-name">OpenAI GPT-4</span>
+            </div>
+            <div class="model-item">
+                <span class="model-name">Google Gemini</span>
+            </div>
+            <div class="model-item">
+                <span class="model-name">Anthropic Claude</span>
+            </div>
+            <div class="model-item">
+                <span class="model-name">Meta Llama 3</span>
+            </div>
+            <div class="model-item active-glow">
+                <span class="model-name">LangChain</span>
+            </div>
+            <div class="model-item">
+                <span class="model-name">Mistral AI</span>
+            </div>
+        </div>
+
+        <p class="trust-footer">Trusted by developers for <span class="bold-text">mission-critical</span> workflows.</p>
+    </div>
+</section>
+<section class="security-section">
+  <div class="security-container">
+    
+    <div class="security-header">
+      <h2>Uncompromised Security & Privacy</h2>
+      <p>Built for enterprises that demand data sovereignty.</p>
+    </div>
+
+    <div class="security-grid">
+      
+      <div class="security-item">
+        <div class="sec-icon-wrapper">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        </div>
+        <div class="sec-text">
+          <h3>We don't store prompts</h3>
+          <p>Your data is processed in real-time and discarded immediately.</p>
+        </div>
+      </div>
+
+      <div class="security-item">
+        <div class="sec-icon-wrapper">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+          </svg>
+        </div>
+        <div class="sec-text">
+          <h3>No AI training on user data</h3>
+          <p>Your inputs are never used to train our models or third-party LLMs.</p>
+        </div>
+      </div>
+
+      <div class="security-item">
+        <div class="sec-icon-wrapper">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <div class="sec-text">
+          <h3>GDPR-ready Architecture</h3>
+          <p>Fully compliant with global data protection standards and regulations.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="try" class="cta-section">
+  <div class="cta-glow"></div>
+  
+  <div class="cta-content">
+    <h2>Start Auditing AI Responses Today</h2>
+    <p class="sub-headline">
+      Detect hallucinations, reduce risk, and trust every AI output before you use it.
+    </p>
+    
+    <div class="cta-action-wrapper">
+      <a href="javascript:void(0)" onclick="checkAccess()" class="btn-try">Try Verity Ai -Free</a>
+      <p class="cta-note">
+        <span class="check-icon">✓</span> No credit card required • Free forever for basic use
+      </p>
+    </div>
+  </div>
+  
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-container">
+    
+    <div class="footer-col brand-col">
+      <img src="assets/logo.png" alt="Verity AI" class="footer-logo">
+      <p>Building the trust layer for Generative AI. Audit, verify, and deploy with confidence.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Integrations</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">API Documentation</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <div class="social-links">
+        <a href="#" aria-label="Twitter">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+        </a>
+        <a href="#" aria-label="LinkedIn">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a href="#" aria-label="GitHub">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2026 Verity AI Inc. All rights reserved.</p>
+  </div>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Elements pakdo
+        const toggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check karo button mila ya nahi
+        if (!toggleBtn) {
+            console.error("Error: Theme Toggle button nahi mila! ID check karein.");
+            return;
+        }
+
+        // Saved Theme load karo
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+
+        // Click Event Listener
+        toggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Attribute badlo
+            htmlElement.setAttribute('data-theme', newTheme);
+            
+            // Save karo
+            localStorage.setItem('theme', newTheme);
+            
+            console.log("Theme changed to:", newTheme); // Testing ke liye
+        });
+    });
+</script>
+<script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        }
+        window.onload = function() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const name = localStorage.getItem('userName');
+    const img = localStorage.getItem('userImg');
+
+    if (isLoggedIn === 'true') {
+        // Login waale buttons chhupao aur profile dikhao
+        document.getElementById('logged-out-view').style.display = 'none';
+        document.getElementById('logged-in-view').style.display = 'flex';
+        
+        // Name aur Image update karein
+        document.getElementById('nav-user-name').innerText = name;
+        document.getElementById('nav-user-img').src = img;
+    }
+}
+
+// Logout function
+function logout() {
+    localStorage.clear();
+    window.location.reload();
+}
+function checkAccess() {
+    // Check karein ki user login hai ya nahi
+    const userLoggedIn = localStorage.getItem('userName');
+
+    if (userLoggedIn) {
+        // Agar login hai, toh seedha playground par bhej do
+        window.location.href = "try-verity.html";
+    } else {
+        // Agar login nahi hai, toh alert dikhao aur login page par bhej do
+        alert("Please Login or Sign Up first to access Verity AI Playground.");
+        window.location.href = "login.html";
+    }
+}
+    </script>
+  <script>
+    // Ye function page load hote hi check karega
+    function updateNavbar() {
+        const name = localStorage.getItem('userName');
+        const img = localStorage.getItem('userImg');
+
+        const loggedOutView = document.getElementById('logged-out-view');
+        const loggedInView = document.getElementById('logged-in-view');
+
+        // Check karein ki data available hai ya nahi
+        if (name && img) {
+            console.log("User detected:", name);
+            loggedOutView.style.display = 'none'; // Login button chhupao
+            loggedInView.style.display = 'flex'; // Profile aur Logout dikhao
+            
+            // UI mein Data fill karein
+            document.getElementById('nav-user-name').innerText = name.split(' ')[0].toUpperCase();
+            document.getElementById('nav-user-img').src = img;
+        } else {
+            console.log("No user login found.");
+            loggedOutView.style.display = 'flex';
+            loggedInView.style.display = 'none';
+        }
+    }
+
+    // Page load par execute karein
+    window.addEventListener('load', updateNavbar);
+
+    // Logout Function
+    function logout() {
+        if(confirm("Are you sure you want to logout?")) {
+            localStorage.clear(); // Saara data saaf
+            window.location.reload(); // Wapas initial state mein
+        }
+    }
+
+    // Try Now button protection logic
+    function checkAccess() {
+        if (localStorage.getItem('userName')) {
+            window.location.href = "try-verity.html"; //
+        } else {
+            alert("Please login first to access the AI Playground!");
+            window.location.href = "login.html";
+        }
+    }
+</script>
+<script>
+    const menu = document.querySelector('#mobile-menu');
+    const navLinks = document.querySelector('.nav-links');
+
+    menu.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        // Icon ko 'X' banane ka logic (optional)
+        menu.classList.toggle('is-active');
+    });
+</script>
+
+
+</body>
+
+</html>
