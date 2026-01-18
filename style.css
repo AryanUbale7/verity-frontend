@@ -11961,3 +11961,17 @@ body {
         margin: 15px 0;
     }
 }
+/* Mobile View CSS Check */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none; /* By default hidden */
+        /* ... baki styling ... */
+    }
+
+    /* Ye class JS add karega jab button dabega */
+    .nav-links.active {
+        display: flex; /* Ya block */
+        flex-direction: column;
+        /* ... position absolute wagera ... */
+    }
+}
