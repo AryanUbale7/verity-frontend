@@ -12,7 +12,7 @@
     Audit responses, detect hallucinations, and deploy AI with confidence.
     <br />
     <br />
-    <a href="[🔴 YOUR LIVE DEMO LINK HERE]"><strong>🚀 View Live Demo »</strong></a>
+    <a href="[🔴 https://verityai.netlify.app/]"><strong>🚀 View Live Demo »</strong></a>
     <br />
     <br />
   </p>
@@ -81,8 +81,8 @@ This project leverages modern web technologies to ensure speed, security, and sc
 
 ## 👤 Contact
 
-Your Name - [@YourLinkedInHandle](LINKEDIN_PROFILE_LINK)
+Your Name - Aryan Ubale (https://www.linkedin.com/in/aryan-ubale/)
 
-Project Link: [https://github.com/yourusername/verity-ai](https://github.com/yourusername/verity-ai)
+Project Link: (https://verityai.netlify.app/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
