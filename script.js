@@ -155,3 +155,124 @@ async function runEvaluation() {
         resultDiv.innerHTML = "❌ Error connecting to server.";
     }
 }
+function checkLoginStatus() {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+        // user already logged in
+        console.log("User already logged in ✅");
+
+        // 👉 OPTIONAL: direct redirect
+        // window.location.href = "try-verity.html";
+
+        // 👉 ya UI change kar
+        document.querySelector(".login-btn").innerText = "Dashboard";
+    }
+}
+
+checkLoginStatus();
+function goToApp() {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+        window.location.href = "try-verity.html";
+    } else {
+        window.location.href = "login.html";
+    }
+}
+function updateNavbar() {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (token && user) {
+        // login/signup hide
+        document.querySelector(".login-btn").style.display = "none";
+        document.querySelector(".signup-btn").style.display = "none";
+
+        // profile show
+        const nav = document.querySelector(".nav-right");
+
+        const profile = document.createElement("div");
+        profile.innerHTML = `
+            <span style="font-weight:600;">👤 ${user.name}</span>
+            <button onclick="logout()" style="margin-left:10px;">Logout</button>
+        `;
+
+        nav.appendChild(profile);
+    }
+}
+
+updateNavbar();
+
+function logout() {
+    localStorage.clear();
+    window.location.reload();
+}
+function updateNavbar() {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    console.log("TOKEN:", token);
+    console.log("USER:", user);
+
+    if (token && user) {
+        document.querySelector(".login-btn").style.display = "none";
+        document.querySelector(".signup-btn").style.display = "none";
+
+        const nav = document.querySelector(".nav-right");
+
+        const profile = document.createElement("div");
+        profile.innerHTML = `
+            <span>👤 ${user.name}</span>
+            <button onclick="logout()">Logout</button>
+        `;
+
+        nav.appendChild(profile);
+    }
+}
+
+updateNavbar();
+function checkLoginStatus() {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const loggedOut = document.getElementById("logged-out-view");
+    const loggedIn = document.getElementById("logged-in-view");
+
+    if (token && user) {
+        console.log("User already logged in ✅");
+
+        // 🔁 switch views
+        loggedOut.style.display = "none";
+        loggedIn.style.display = "flex";
+
+        // 👤 set user data
+        document.getElementById("nav-user-name").innerText = user.name || "User";
+        
+        if (user.picture) {
+            document.getElementById("nav-user-img").src = user.picture;
+        } else {
+            document.getElementById("nav-user-img").src = "https://via.placeholder.com/30";
+        }
+
+    } else {
+        loggedOut.style.display = "flex";
+        loggedIn.style.display = "none";
+    }
+}
+
+// 🔥 run on page load
+checkLoginStatus();
+checkAuth();
+function checkAccess() {
+    const token = localStorage.getItem("token");
+
+    console.log("TOKEN:", token); // 🔥 debug
+
+    if (token && token !== "undefined" && token !== "null") {
+        window.location.href = "try-verity.html";
+    } else {
+        alert("Please login first to access the tool!");
+        window.location.href = "login.html";
+    }
+}

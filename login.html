@@ -115,18 +115,26 @@
 
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-            <form action="#">
-                <h1>Create Account</h1>
-                <div class="google-wrapper">
-                    <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline" data-text="signup_with" data-size="large" data-logo_alignment="left"></div>
-                </div>
-                <span>or use your email for registration</span>
-                <input type="text" placeholder="Full Name" />
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
-                <button class="btn-main" type="button" onclick="window.location.href='try-verity.html'">Sign Up</button>
-            </form>
+    <form action="#">
+        <h1>Create Account</h1>
+
+        <span>Register with Email + OTP 🔐</span>
+
+        <input type="text" placeholder="Full Name" id="signupName" />
+        <input type="email" placeholder="Email" id="signupEmail" />
+        <input type="password" placeholder="Password" id="signupPassword" />
+
+        <!-- 🔥 SEND OTP -->
+        <div style="display:flex; gap:10px; width:100%;">
+            <input type="text" placeholder="Enter OTP" id="signupOtp" />
+            <button type="button" onclick="sendOtp()" style="padding:10px; background:#2563eb; color:white; border:none; border-radius:8px;">
+                Send OTP
+            </button>
         </div>
+
+        <button class="btn-main" type="button" onclick="signupUser()">Verify & Sign Up</button>
+    </form>
+</div>
 
         <div class="form-container sign-in-container">
             <form action="#">
@@ -138,7 +146,7 @@
                 <input type="email" placeholder="Email" id="loginEmail" />
                 <input type="password" placeholder="Password" id="loginPass" />
                 <a href="#" style="margin: 10px 0; color: #64748b; font-size: 12px; text-decoration: none;">Forgot your password?</a>
-                <button class="btn-main" type="button" onclick="window.location.href='try-verity.html'">Sign In</button>
+                <button class="btn-main" type="button" onclick="loginUser()">Sign In</button>
             </form>
         </div>
 
@@ -172,16 +180,16 @@
             container.classList.remove("right-panel-active");
         });
 
-        // Google Auth Logic
+        
         function handleCredentialResponse(response) {
     const responsePayload = decodeJwtResponse(response.credential);
 
-    // Data local storage mein save karein
+    
     localStorage.setItem('userName', responsePayload.name);
     localStorage.setItem('userImg', responsePayload.picture);
-    localStorage.setItem('isLoggedIn', 'true'); // Login status track karne ke liye
+    localStorage.setItem('isLoggedIn', 'true'); e
     
-    // Ab ye Home Page par bhejega
+    
     window.location.href = "index.html";
 }
         function decodeJwtResponse(token) {
@@ -197,22 +205,21 @@
   const scriptURL = 'https://script.google.com/macros/s/AKfycbzCVr8B1zhE4qwHKvN6gHWUIJEDVMDBdArWOJ1eyWOuITR2E1kJDTGvimtJIQST5a0H/exec';
 
 function handleCredentialResponse(response) {
-    // 1. User Data Nikalo
+    
     const user = decodeJwtResponse(response.credential);
     console.log("User Info:", user);
 
-    // 2. Local Storage Update Karo (Instant UI ke liye)
+    
     localStorage.setItem('authToken', response.credential);
     localStorage.setItem('userName', user.name);
     localStorage.setItem('userPic', user.picture);
     localStorage.setItem('userEmail', user.email);
 
-    // 3. Google Sheet Data Bhejo (Background Mein)
-    // ✅ NOTE: 'await' hata diya hai taaki rukna na pade
+    
     fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
-        keepalive: true, // 🔥 YE ZAROORI HAI: Page change hone par bhi data bhejta rahega
+        keepalive: true, 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             name: user.name,
@@ -221,11 +228,11 @@ function handleCredentialResponse(response) {
         })
     });
 
-    // 4. TURANT Redirect Karo (Bina Intezaar Kiye)
+    
     window.location.href = "index.html";
 }
 
-// Decoder function waisa hi rahega
+
 function decodeJwtResponse(token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -233,6 +240,106 @@ function decodeJwtResponse(token) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     return JSON.parse(jsonPayload);
+}
+async function loginUser() {
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPass").value;
+
+    const res = await fetch(`http://127.0.0.1:8000/login?email=${email}&password=${password}`, {
+        method: "POST"
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        console.log("LOGIN DATA:", data); // 👈 debug
+
+        // 🔥 IMPORTANT
+        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        window.location.href = "index.html";
+    } else {
+        alert("Login failed ❌");
+    }
+}
+async function signupUser() {
+    const name = document.querySelector('input[placeholder="Full Name"]').value;
+    const email = document.querySelector('input[placeholder="Email"]').value;
+    const password = document.querySelector('input[placeholder="Password"]').value;
+
+    try {
+        const res = await fetch(`http://127.0.0.1:8000/signup?name=${name}&email=${email}&password=${password}`, {
+            method: "POST"
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            alert("Signup Successful 🎉");
+        } else {
+            alert(data.detail || "Signup failed ❌");
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Server error ❌");
+    }
+}
+// 🔥 SEND OTP
+async function sendOtp() {
+    const email = document.getElementById("signupEmail").value;
+
+    if (!email) {
+        alert("Enter email first ❌");
+        return;
+    }
+
+    try {
+        const res = await fetch(`http://127.0.0.1:8000/send-otp?email=${email}`, {
+            method: "POST"
+        });
+
+        const data = await res.json();
+        alert("OTP sent to your email 📩");
+
+    } catch (err) {
+        alert("Error sending OTP ❌");
+        console.error(err);
+    }
+}
+
+// 🔥 SIGNUP WITH OTP
+async function signupUser() {
+    const name = document.getElementById("signupName").value;
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    const otp = document.getElementById("signupOtp").value;
+
+    if (!name || !email || !password || !otp) {
+        alert("Fill all fields ❌");
+        return;
+    }
+
+    try {
+        const res = await fetch(
+            `http://127.0.0.1:8000/signup?name=${name}&email=${email}&password=${password}&otp=${otp}`,
+            { method: "POST" }
+        );
+
+        const data = await res.json();
+
+        if (res.ok) {
+            alert("Signup successful 🎉");
+            window.location.href = "index.html";
+        } else {
+            alert(data.detail || "Signup failed ❌");
+        }
+
+    } catch (err) {
+        alert("Server error ❌");
+        console.error(err);
+    }
 }
 </script>
 </body>
